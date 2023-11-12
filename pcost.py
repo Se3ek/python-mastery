@@ -3,7 +3,8 @@ from os import path
 # Constants
 FILE_PATH = path.join("Data", "portfolio3.dat")
 
-def read_data(path) -> dict[tuple[float]]:
+
+def read_data(path) -> dict[str, tuple[float, float]]:
     """
     Read data from the file and return as dict containing tuple of number and price
     """
@@ -26,12 +27,14 @@ def read_data(path) -> dict[tuple[float]]:
 
     return data
 
-def calc_total(data: dict[tuple[float]]) -> float:
+
+def calc_total(data: dict[str, tuple[float, float]]) -> float:
     """
     Take a dictionary of items with (number, price) tuples und calculate the overall total
     """
 
     return sum([v[0] * v[1] for v in data.values()])
+
 
 def portfolio_cost(path: str) -> None:
     """
@@ -40,6 +43,7 @@ def portfolio_cost(path: str) -> None:
     data = read_data(path)
     total = calc_total(data)
     print(f"Total portfolio cost: {total}")
+
 
 if __name__ == "__main__":
     total = calc_total(read_data(FILE_PATH))

@@ -1,6 +1,10 @@
-import csv, tracemalloc, os, typing
+import csv
+import os
+import tracemalloc
+import typing
 
 FILE_PATH = os.path.join("Data", "ctabus.csv")
+
 
 def read_as_tuple() -> tuple[str, str, str, int]:
     """
@@ -8,19 +12,20 @@ def read_as_tuple() -> tuple[str, str, str, int]:
     """
     with open(FILE_PATH, "r") as f:
         rows = csv.reader(f)
-        headings = next(rows)
+        next(rows)  # remove headings
         row = next(rows)
         data = (row[0], row[1], row[2], int(row[3]))
     return data
 
-def read_as_dict() -> dict[str, str, str, int]:
+
+def read_as_dict() -> dict[str, str | int]:
     """
     Read the file and return the data as a dictionary
     """
     data = dict()
     with open(FILE_PATH, "r") as f:
         rows = csv.reader(f)
-        headings = next(rows)
+        next(rows)  # remove headings
         row = next(rows)
         data["route"] = row[0]
         data["date"] = row[1]
@@ -28,59 +33,67 @@ def read_as_dict() -> dict[str, str, str, int]:
         data["rides"] = int(row[3])
     return data
 
-class ride_record:
+
+class RideRecord:
     def __init__(self, route: str, date: str, daytype: str, rides: int):
         self.route = route
         self.date = date
         self.daytype = daytype
         self.rides = rides
 
-def read_as_class() -> ride_record:
+
+def read_as_class() -> RideRecord:
     """
     Read the file and return the data as a record object
     """
     with open(FILE_PATH, "r") as f:
         rows = csv.reader(f)
-        headings = next(rows)
+        next(rows)  # remove headings
         row = next(rows)
-        data = ride_record(row[0], row[1], row[2], int(row[3]))
+        data = RideRecord(row[0], row[1], row[2], int(row[3]))
     return data
 
-class nt_record(typing.NamedTuple):
+
+class NtRecord(typing.NamedTuple):
     route: str
     date: str
     daytype: str
     rides: int
 
-def named_tuples() -> typing.NamedTuple:
+
+def named_tuples() -> typing.NamedTuple[str, str, str, int]:
     """
     Read the file and return the data as a named tuple
     """
     with open(FILE_PATH, "r") as f:
         rows = csv.reader(f)
-        headings = next(rows)
+        next(rows)  # remove headings
         row = next(rows)
-        nt = nt_record(row[0], row[1], row[2], int(row[3]))
+        nt = NtRecord(row[0], row[1], row[2], int(row[3]))
     return nt
 
-class ride_slots:
+
+class RideSlots:
     __slots__ = ["route", "date", "daytype", "rides"]
+
     def __init__(self, route: str, date: str, daytype: str, rides: int):
         self.route = route
         self.date = date
         self.daytype = daytype
         self.rides = rides
 
-def record_with_slots() -> ride_slots:
+
+def record_with_slots() -> NtRecord:
     """
     Ride the file and return the data as a class with slots
     """
     with open(FILE_PATH, "r") as f:
         rows = csv.reader(f)
-        headings = next(rows)
+        next(rows)  # remove headings
         row = next(rows)
-        slts = nt_record(row[0], row[1], row[2], int(row[3]))
+        slts = NtRecord(row[0], row[1], row[2], int(row[3]))
     return slts
+
 
 if __name__ == "__main__":
     mem_data = dict()
@@ -88,31 +101,31 @@ if __name__ == "__main__":
     tracemalloc.start()
     tup = read_as_tuple()
     mem_data["Tuple"] = tracemalloc.get_traced_memory()
-    tracemalloc.stop
+    tracemalloc.stop()
 
     # Representation as a dictionary
     tracemalloc.start()
     dic = read_as_dict()
     mem_data["Dictionary"] = tracemalloc.get_traced_memory()
-    tracemalloc.stop
+    tracemalloc.stop()
 
     # Representation as a class
     tracemalloc.start()
     cls = read_as_class()
     mem_data["Class"] = tracemalloc.get_traced_memory()
-    tracemalloc.stop
+    tracemalloc.stop()
 
     # Representation as a named tuple
     tracemalloc.start()
     ntup = named_tuples()
     mem_data["Named tuple"] = tracemalloc.get_traced_memory()
-    tracemalloc.stop
+    tracemalloc.stop()
 
     # Representation as a class with slots
     tracemalloc.start()
     slots = record_with_slots()
     mem_data["Class with slots"] = tracemalloc.get_traced_memory()
-    tracemalloc.stop
+    tracemalloc.stop()
 
     # Print the results
     sorted_dict = dict(sorted(mem_data.items(), key=lambda item: item[1]))
