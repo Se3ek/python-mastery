@@ -18,20 +18,26 @@ def read_as_tuple() -> tuple[str, str, str, int]:
     return data
 
 
-def read_as_dict() -> dict[str, str | int]:
+def read_as_dict(linenum: int = 0) -> list[dict[str, str | int]]:
     """
     Read the file and return the data as a dictionary
     """
-    data = dict()
+    linenum += 1    # Add 1 to counter since we'll be skipping the header
+    results = list()
     with open(FILE_PATH, "r") as f:
         rows = csv.reader(f)
         next(rows)  # remove headings
-        row = next(rows)
-        data["route"] = row[0]
-        data["date"] = row[1]
-        data["daytype"] = row[2]
-        data["rides"] = int(row[3])
-    return data
+        for row in rows:
+            data = dict()
+            data["route"] = row[0]
+            data["date"] = row[1]
+            data["daytype"] = row[2]
+            data["rides"] = int(row[3])
+            results.append(data)
+            # Stop iterating if line number from input is reached unless all lines are called for
+            if linenum != 1 and rows.line_num >= linenum:
+                break
+    return results
 
 
 class RideRecord:
@@ -61,7 +67,7 @@ class NtRecord(typing.NamedTuple):
     rides: int
 
 
-def named_tuples() -> typing.NamedTuple[str, str, str, int]:
+def named_tuples() -> typing.NamedTuple:
     """
     Read the file and return the data as a named tuple
     """
@@ -105,7 +111,7 @@ if __name__ == "__main__":
 
     # Representation as a dictionary
     tracemalloc.start()
-    dic = read_as_dict()
+    dic = read_as_dict(1)[0]    # Returns a tuple, list so have one entry made and select it
     mem_data["Dictionary"] = tracemalloc.get_traced_memory()
     tracemalloc.stop()
 
