@@ -8,7 +8,6 @@ import time
 from sys import intern
 from typing import overload
 
-
 INPUT_PATH = "Data/ctabus.csv"
 
 
@@ -82,6 +81,7 @@ class DataCollection:
                 }
             )
 
+    #
     def append(self, record: dict | list[dict]):
         """
         Add information to the data manually
