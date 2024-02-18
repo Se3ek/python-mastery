@@ -8,6 +8,55 @@ from collections.abc import Sequence
 FILE_PATH = os.path.join("Data", "ctabus.csv")
 
 
+class RideData(Sequence):
+    """
+    Represent record structures as separate lists
+    """
+
+    def __init__(self, routes=None, dates=None, daytypes=None, numrides=None) -> None:
+        """
+        Each value is a list with all the values (a column)
+        """
+        self.routes = list(routes) if routes else []
+        self.dates = list(dates) if dates else []
+        self.daytypes = list(daytypes) if daytypes else []
+        self.numrides = list(numrides) if numrides else []
+
+    def __len__(self) -> int:
+        """
+        All lists should have the same length
+        """
+        return len(self.routes)
+
+    def __getitem__(self, item):
+        """
+        Retrieve an item in the form of a dict
+        """
+        if isinstance(item, int):
+            return {
+                "route": self.routes[item],
+                "date": self.dates[item],
+                "daytype": self.daytypes[item],
+                "rides": self.numrides[item]
+            }
+        elif isinstance(item, slice):
+            return RideData(
+                routes=self.routes[item],
+                dates=self.dates[item],
+                daytypes=self.daytypes[item],
+                numrides=self.numrides[item]
+            )
+
+    def append(self, d) -> None:
+        """
+        Add an item to the list of records
+        """
+        self.routes.append(d["route"])
+        self.dates.append(d["date"])
+        self.daytypes.append(d["daytype"])
+        self.numrides.append(d["rides"])
+
+
 def read_as_tuple() -> tuple[str, str, str, int]:
     """
     Read the file and return the data as a tuple
@@ -102,55 +151,6 @@ def record_with_slots() -> NtRecord:
         row = next(rows)
         slts = NtRecord(row[0], row[1], row[2], int(row[3]))
     return slts
-
-
-class RideData(Sequence):
-    """
-    Represent record structures as separate lists
-    """
-
-    def __init__(self, routes=None, dates=None, daytypes=None, numrides=None) -> None:
-        """
-        Each value is a list with all the values (a column)
-        """
-        self.routes = list(routes) if routes else []
-        self.dates = list(dates) if dates else []
-        self.daytypes = list(daytypes) if daytypes else []
-        self.numrides = list(numrides) if numrides else []
-
-    def __len__(self) -> int:
-        """
-        All lists should have the same length
-        """
-        return len(self.routes)
-
-    def __getitem__(self, item):
-        """
-        Retrieve an item in the form of a dict
-        """
-        if isinstance(item, int):
-            return {
-                "route": self.routes[item],
-                "date": self.dates[item],
-                "daytype": self.daytypes[item],
-                "rides": self.numrides[item]
-            }
-        elif isinstance(item, slice):
-            return RideData(
-                routes=self.routes[item],
-                dates=self.dates[item],
-                daytypes=self.daytypes[item],
-                numrides=self.numrides[item]
-            )
-
-    def append(self, d) -> None:
-        """
-        Add an item to the list of records
-        """
-        self.routes.append(d["route"])
-        self.dates.append(d["date"])
-        self.daytypes.append(d["daytype"])
-        self.numrides.append(d["rides"])
 
 
 if __name__ == "__main__":
