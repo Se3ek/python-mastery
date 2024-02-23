@@ -69,7 +69,7 @@ def read_as_tuple() -> tuple[str, str, str, int]:
     return data
 
 
-def read_as_dict(linenum: int = 0) -> list[dict[str, str | int]]:
+def read_as_dict(linenum: int = 0) -> list[dict]:
     """
     Read the file and return the data as a dictionary
     """
@@ -80,7 +80,7 @@ def read_as_dict(linenum: int = 0) -> list[dict[str, str | int]]:
         rows = csv.reader(f)
         next(rows)  # remove headings
         for row in rows:
-            data = dict()
+            data: dict = dict()
             data["route"] = row[0]
             data["date"] = row[1]
             data["daytype"] = row[2]

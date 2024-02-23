@@ -1,6 +1,7 @@
 # mutint.py
+from __future__ import annotations
+
 from functools import total_ordering
-from mutint import MutInt
 
 
 @total_ordering

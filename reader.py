@@ -32,7 +32,7 @@ class DataCollection:
         Stores any data from a csv file with specified data types
         """
 
-    def __init__(self, input_path: str = None, types: list = None, **kwargs):
+    def __init__(self, input_path: str = "", types: list = [], **kwargs):
 
         if not input_path:
             # For manual data creation
@@ -95,7 +95,7 @@ class DataCollection:
                     self._data[k].append(record[k])
 
 
-def read_csv_as_columns(input_path: str, types: list = None) -> DataCollection:
+def read_csv_as_columns(input_path: str, types: list = []) -> DataCollection:
     """
     Reads a csv file and saves it as columns but returns it as a DataCollection object
     """

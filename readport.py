@@ -18,7 +18,7 @@ def delta_people_on_route(data: list[dict], date1: datetime, date2: datetime) ->
     """
     Count the number of rides per route within two specified dates and return as dict
     """
-    delta_rides = Counter()
+    delta_rides: Counter = Counter()
     date1_str = date1.strftime("%m/%d/%Y")
     date2_str = date2.strftime("%m/%d/%Y")
 
@@ -28,11 +28,11 @@ def delta_people_on_route(data: list[dict], date1: datetime, date2: datetime) ->
     return delta_rides
 
 
-def count_per_route(data: list[dict]) -> dict[int]:
+def count_per_route(data: list[dict]) -> Counter:
     """
     Count number of rides taken per route and return as a dictionary of integers
     """
-    count_dict = Counter()
+    count_dict: Counter = Counter()
 
     for line in data:
         count_dict[line["route"]] += line["rides"]
