@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from csv import reader
+from tableformat import print_table
 
 
 class Stock:
@@ -42,9 +43,7 @@ class Stock:
         """
         Print a given portfolio in table format
         """
-        header = f"""{"name":>5} {"shares":>8} {"price":>10}\n"""
-        data = "\n".join([f"""{s.name:>5} {s.shares:>8} {s.price:>10.2f}""" for s in portfolio])
-        print(header + data)
+        print_table(portfolio, ["name", "price", "shares"])
 
 
 if __name__ == "__main__":
