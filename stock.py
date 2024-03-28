@@ -5,20 +5,42 @@ from tableformat import print_table
 
 
 class Stock:
-    types = (str, int, float)
+    __slots__ = ("_name", "_shares", "_price")
+    _types = (str, int, float)
 
     def __init__(self, name: str, shares: int, price: float) -> None:
-        self.name: str = name
-        self.shares: int = shares
-        self.price: float = price
+        self._name: str = name
+        self._shares: int = shares
+        self._price: float = price
 
     @classmethod
     def from_row(cls, row):
-        values = [func(val) for func, val in zip(cls.types, row)]
+        values = [func(val) for func, val in zip(cls._types, row)]
         return cls(*values)
 
+    @property
     def cost(self) -> float:
-        return self.shares * self.price
+        return self._shares * self._price
+
+    @property
+    def price(self):
+        return self._price
+
+    @price.setter
+    def price(self, value):
+        if not isinstance(value, self._types[2]) or value < 0:
+            raise ValueError("price must be a positive float")
+        else:
+            self._price = value
+
+    @property
+    def shares(self):
+        return self._shares
+
+    @shares.setter
+    def shares(self, value):
+        if not isinstance(value, self._types[1]) or value < 0:
+            raise ValueError("shares must be a positive int")
 
     def sell(self, nshares: int) -> None:
         """
