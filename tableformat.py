@@ -1,15 +1,65 @@
+class TableFormatter:
+    def headings(self, headers):
+        raise NotImplementedError()
 
-def print_table(data, columns):
-    lengths = {
-        c: max([len(str(getattr(d, c))) for d in data] + [len(c)])+1 for c in columns
+    def row(self, rowdata):
+        raise NotImplementedError()
+
+
+class TextTableFormatter(TableFormatter):
+    def headings(self, headers):
+        print(' '.join('%10s' % h for h in headers))
+        print(('-' * 10 + ' ') * len(headers))
+
+    def row(self, rowdata):
+        print(' '.join('%10s' % d for d in rowdata))
+
+
+class CSVTableFormatter(TableFormatter):
+    def headings(self, headers):
+        print(','.join(headers))
+
+    def row(self, rowdata):
+        print(','.join([str(d) for d in rowdata]))
+
+
+class HTMLTableFormatter(TableFormatter):
+    def headings(self, headers):
+        string = f"<tr> <th>{'</th> <th>'.join(headers)}</th> </tr>"
+        print(string)
+
+    def row(self, rowdata):
+        string = f"<tr> <td>{'</td> <td>'.join([str(d) for d in rowdata])}</td> </tr>"
+        print(string)
+
+
+def print_table(data, columns, formattr: TableFormatter):
+    formattr.headings(columns)
+    for r in data:
+        rowdata = [getattr(r, fieldname) for fieldname in columns]
+        formattr.row(rowdata)
+
+
+def create_formatter(form):
+    mapping = {
+        "text": TextTableFormatter,
+        "html": HTMLTableFormatter,
+        "csv": CSVTableFormatter
     }
-    header = " ".join([f"{c:>{lengths[c]}}" for c in columns])
-    sep = "".join([f"{'':->{lengths[c]+1}}" for c in columns])
-    data = "\n".join([" ".join([f"{getattr(s, d):>{lengths[d]}}" for d in columns]) for s in data])
-    print(header, sep, data, sep="\n")
+
+    return mapping[form]()
 
 
 if __name__ == "__main__":
     from stock import Stock
+
     portfolio = Stock.read_portfolio('Data/portfolio.csv')
-    print_table(portfolio, ["name", "price", "shares"])
+
+    text_formatter = create_formatter("text")
+    csv_formatter = create_formatter("csv")
+    html_formatter = create_formatter("html")
+
+    print_table(portfolio, ["name", "shares", "price"], text_formatter)
+    print_table(portfolio, ["name", "shares", "price"], csv_formatter)
+    print_table(portfolio, ["name", "shares", "price"], html_formatter)
+

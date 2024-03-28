@@ -19,22 +19,26 @@ class Stock:
         return cls(*values)
 
     @property
+    def name(self) -> str:
+        return self._name
+
+    @property
     def cost(self) -> float:
         return self._shares * self._price
 
     @property
-    def price(self):
+    def price(self) -> float:
         return self._price
 
     @price.setter
-    def price(self, value):
+    def price(self, value) -> None:
         if not isinstance(value, self._types[2]) or value < 0:
             raise ValueError("price must be a positive float")
         else:
             self._price = value
 
     @property
-    def shares(self):
+    def shares(self) -> int:
         return self._shares
 
     @shares.setter
@@ -67,7 +71,9 @@ class Stock:
         """
         Print a given portfolio in table format
         """
-        print_table(portfolio, ["name", "price", "shares"])
+        from tableformat import create_formatter
+        fmtr = create_formatter("text")
+        print_table(portfolio, ["name", "price", "shares"], fmtr)
 
 
 if __name__ == "__main__":
