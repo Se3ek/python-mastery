@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 from csv import reader
@@ -6,10 +5,17 @@ from tableformat import print_table
 
 
 class Stock:
+    types = (str, int, float)
+
     def __init__(self, name: str, shares: int, price: float) -> None:
         self.name: str = name
         self.shares: int = shares
         self.price: float = price
+
+    @classmethod
+    def from_row(cls, row):
+        values = [func(val) for func, val in zip(cls.types, row)]
+        return cls(*values)
 
     def cost(self) -> float:
         return self.shares * self.price
@@ -30,11 +36,7 @@ class Stock:
             read = reader(f)
             header: list[str] = next(read)
             for line in read:
-                portfolio_list.append(cls(
-                    line[header.index("name")],
-                    int(line[header.index("shares")]),
-                    float(line[header.index("price")])
-                ))
+                portfolio_list.append(cls.from_row(line))
 
         return portfolio_list
 

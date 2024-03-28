@@ -7,6 +7,7 @@ import time
 
 from sys import intern
 from typing import overload
+from stock import Stock
 
 INPUT_PATH = "Data/ctabus.csv"
 
@@ -81,7 +82,6 @@ class DataCollection:
                 }
             )
 
-    #
     def append(self, record: dict | list[dict]):
         """
         Add information to the data manually
@@ -100,6 +100,19 @@ def read_csv_as_columns(input_path: str, types: list = []) -> DataCollection:
     Reads a csv file and saves it as columns but returns it as a DataCollection object
     """
     return DataCollection(input_path, types)
+
+
+def read_csv_as_instances(filename: str, cls: Stock) -> list[Stock]:
+    """
+    Reads the csv file and returns an instance of the specified class
+    """
+    records: list = []
+    with open(filename) as f:
+        rows = csv.reader(f)
+        headers: list[str] = next(rows)
+        for row in rows:
+            records.append(cls.from_row(row))
+    return records
 
 
 def test_memory_caching():
