@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import sys
+
 from csv import reader
-from tableformat import print_table
+
+import tableformat
+from tableformat import print_table, create_formatter
 
 
 class Stock:
@@ -75,7 +79,15 @@ class Stock:
         fmtr = create_formatter("text")
         print_table(portfolio, ["name", "price", "shares"], fmtr)
 
+    def __repr__(self):
+        return f"Stock('{self.name}', {self.shares}, {self.price})"
+
+    def __eq__(self, other):
+        return isinstance(other, Stock) and ((self.name, self.shares, self.price) ==
+                                             other.name, other.shares, other.price)
+
 
 if __name__ == "__main__":
     port = Stock.read_portfolio("Data/portfolio.csv")
     Stock.print_portfolio(port)
+    print(repr(port))
