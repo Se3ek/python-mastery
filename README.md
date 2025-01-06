@@ -1,25 +1,33 @@
 # Advanced Python Mastery
 
 A course by David Beazley (https://www.dabeaz.com)  
-Copyright (C) 2007-2023  
+Copyright (C) 2007-2024  
 
 ## Synopsis
 
 An exercise-driven course on Advanced Python Programming that was
 battle-tested several hundred times on the corporate-training circuit
 for more than a decade.  Written by David Beazley, author of the
-Python Cookbook, 3rd Edition (O'Reilly) and Python Distilled
+[Python Cookbook, 3rd Edition](https://www.dabeaz.com/cookbook.html) (O'Reilly) and 
+[Python Distilled](https://www.dabeaz.com/python-distilled/index.html)
 (Addison-Wesley).  Released under a Creative Commons license.  Free of
 ads, tracking, pop-ups, newsletters, and AI.
+
+Everything in this course should work with the latest version of
+Python, but be aware that the course primarily targets the feature set
+of Python 3.6.  As such, certain modern features don't get coverage. 
+Honestly, this shouldn't affect you much unless you're trying to write code
+that's freakishly clever.
 
 ## Target Audience 
 
 This course is for Python programmers who want to move beyond 
-short scripts to writing more sophisticated programs.  Topics
-focus on programming techniques that get used in popular libraries and
-frameworks. The primary goal is to better understand the Python language
-itself so that you can understand other people's code and so that you
-can apply your newfound knowledge to your own projects.
+short scripts to writing more sophisticated programs.    To do that,
+it helps to better understand the programming techniques used
+in popular libraries and frameworks. Thus, this course is mainly 
+for programmers who want to build a more complete mental model of the
+Python language itself and how it works.  Ultimately, the goal
+is to be able to apply this knowledge to your own projects.
 
 ## Prerequisites
 
@@ -108,6 +116,15 @@ material was primarily developed pre-pandemic and represents Python as
 it was at that time. Some topics (e.g., typing or async) are
 sufficiently complex that they would be better covered on their own
 in a separate course.
+
+**Q: Do you have plans to modernize the course?**
+
+**A:** It is my intention that everything in the course apply to the
+latest version of Python.  Unless Python makes backwards-incompatible
+changes to the core language, that should hold.  Although the course
+doesn't cover every new features, I won't rule out future changes.  A
+lot depends on my available time and interest however.  So, I make no
+promises.
 
 **Q: Why did you release the course?**
 
